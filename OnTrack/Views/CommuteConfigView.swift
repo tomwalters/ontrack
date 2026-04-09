@@ -56,6 +56,12 @@ struct CommuteConfigView: View {
             )
             .labelsHidden()
         }
+
+        Stepper(
+            "\(window.walkingTimeMinutes) min walk to station",
+            value: $window.walkingTimeMinutes,
+            in: 1...60
+        )
     }
 
     private var startTimeBinding: Binding<Date> {

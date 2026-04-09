@@ -44,7 +44,8 @@ final class ConfigStore {
             return ActiveRoute(
                 originCRS: config.morningWindow.originCRS.uppercased(),
                 destinationCRS: config.morningWindow.destinationCRS.uppercased(),
-                windowName: "Morning"
+                windowName: "Morning",
+                walkingTimeMinutes: config.morningWindow.walkingTimeMinutes
             )
         }
 
@@ -52,7 +53,8 @@ final class ConfigStore {
             return ActiveRoute(
                 originCRS: config.eveningWindow.originCRS.uppercased(),
                 destinationCRS: config.eveningWindow.destinationCRS.uppercased(),
-                windowName: "Evening"
+                windowName: "Evening",
+                walkingTimeMinutes: config.eveningWindow.walkingTimeMinutes
             )
         }
 

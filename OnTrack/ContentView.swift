@@ -25,14 +25,6 @@ struct ContentView: View {
                 Section("Active Days") {
                     DayPickerView(activeDays: $config.activeDays)
                 }
-
-                Section("Walking Time") {
-                    Stepper(
-                        "\(config.walkingTimeMinutes) minutes to station",
-                        value: $config.walkingTimeMinutes,
-                        in: 1...60
-                    )
-                }
             }
             .navigationTitle("OnTrack")
             .onChange(of: config) { _ in
