@@ -1,0 +1,43 @@
+name: OnTrack
+options:
+  bundleIdPrefix: com.ontrack
+  deploymentTarget:
+    iOS: "16.0"
+  xcodeVersion: "15.0"
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    TARGETED_DEVICE_FAMILY: "1"
+
+targets:
+  OnTrack:
+    type: application
+    platform: iOS
+    sources:
+      - path: OnTrack
+      - path: Shared
+    settings:
+      base:
+        INFOPLIST_FILE: OnTrack/Info.plist
+        CODE_SIGN_ENTITLEMENTS: OnTrack/OnTrack.entitlements
+        PRODUCT_BUNDLE_IDENTIFIER: com.ontrack.app
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    dependencies:
+      - target: OnTrackWidgetExtension
+
+  OnTrackWidgetExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: OnTrackWidget
+      - path: Shared
+    settings:
+      base:
+        INFOPLIST_FILE: OnTrackWidget/Info.plist
+        CODE_SIGN_ENTITLEMENTS: OnTrackWidget/OnTrackWidgetExtension.entitlements
+        PRODUCT_BUNDLE_IDENTIFIER: com.ontrack.app.widget
+        ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME: WidgetBackground
+    entitlements:
+      path: OnTrackWidget/OnTrackWidgetExtension.entitlements
