@@ -14,6 +14,11 @@
 		486F23412F87C948007F4F7B /* FetchedTrainInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486F233D2F87C62A007F4F7B /* FetchedTrainInfo.swift */; };
 		498A779D9598211FAF398773 /* OnTrackApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D41B9B42135C291A8F7323 /* OnTrackApp.swift */; };
 		5102D229DACDF5AEA27F609B /* DateFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52ECC0A7AC9E3D5D46C82CBA /* DateFormatting.swift */; };
+		9FA1B2C3D4E5F60718293A4B /* BackgroundRefreshManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F0E1D2C3B4A596877665544 /* BackgroundRefreshManager.swift */; };
+		AC1B2C3D4E5F60718293A4B5 /* TrainUpdateChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8B7C6D5E4F3A2918070605 /* TrainUpdateChecker.swift */; };
+		E7D5F4C3B2A1908070605040 /* TrainUpdateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E2D3C4B5A6978877665544 /* TrainUpdateManager.swift */; };
+		C7D9E1F2A3B4567890ABCDEF /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F7D9C1E2B3456789ABCDEF /* RootView.swift */; };
+		D8E0F1A2B3C4567890ABCDEF /* TrainTimesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E8C2A4D5F60718293B4C5D /* TrainTimesView.swift */; };
 		61CDB2384E5037738F7CD0C5 /* TrainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A72B1619DB7AF461095A59 /* TrainService.swift */; };
 		62CE2424FD70D597F2116D9C /* CommuteConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C327E487E4377AC5DB9AE30 /* CommuteConfigView.swift */; };
 		6844D384743E931E68ECD46F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1F341190FDE6612F80F2F9 /* ContentView.swift */; };
@@ -69,7 +74,12 @@
 		7C327E487E4377AC5DB9AE30 /* CommuteConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommuteConfigView.swift; sourceTree = "<group>"; };
 		823C608BBD16D55DC53DF47B /* DayPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayPickerView.swift; sourceTree = "<group>"; };
 		8E83AA58B2722D1F4839D255 /* OnTrack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OnTrack.entitlements; sourceTree = "<group>"; };
+		8F0E1D2C3B4A596877665544 /* BackgroundRefreshManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshManager.swift; sourceTree = "<group>"; };
+		A5F7D9C1E2B3456789ABCDEF /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		B6E8C2A4D5F60718293B4C5D /* TrainTimesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainTimesView.swift; sourceTree = "<group>"; };
 		92689A89BD25D2E792FF8BF2 /* TrainModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainModels.swift; sourceTree = "<group>"; };
+		9A8B7C6D5E4F3A2918070605 /* TrainUpdateChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainUpdateChecker.swift; sourceTree = "<group>"; };
+		F1E2D3C4B5A6978877665544 /* TrainUpdateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainUpdateManager.swift; sourceTree = "<group>"; };
 		A6EF3BD2BD53B86A3DF28F6C /* OnTrackWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OnTrackWidgetExtension.entitlements; sourceTree = "<group>"; };
 		CE3235A16104D1E3F0ABC702 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		F087EE5CC9EEE6CD6CEFA285 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -131,6 +141,9 @@
 			isa = PBXGroup;
 			children = (
 				7B1F341190FDE6612F80F2F9 /* ContentView.swift */,
+				8F0E1D2C3B4A596877665544 /* BackgroundRefreshManager.swift */,
+				9A8B7C6D5E4F3A2918070605 /* TrainUpdateChecker.swift */,
+				F1E2D3C4B5A6978877665544 /* TrainUpdateManager.swift */,
 				F087EE5CC9EEE6CD6CEFA285 /* Info.plist */,
 				8E83AA58B2722D1F4839D255 /* OnTrack.entitlements */,
 				45D41B9B42135C291A8F7323 /* OnTrackApp.swift */,
@@ -160,6 +173,8 @@
 		FDA0A7CB4DBB010A00380D16 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A5F7D9C1E2B3456789ABCDEF /* RootView.swift */,
+				B6E8C2A4D5F60718293B4C5D /* TrainTimesView.swift */,
 				7C327E487E4377AC5DB9AE30 /* CommuteConfigView.swift */,
 				823C608BBD16D55DC53DF47B /* DayPickerView.swift */,
 			);
@@ -244,12 +259,17 @@
 				9D2D6EA997DCB40B5DA258D3 /* ConfigStore.swift in Sources */,
 				486F233E2F87C62A007F4F7B /* FetchedTrainInfo.swift in Sources */,
 				6844D384743E931E68ECD46F /* ContentView.swift in Sources */,
+				9FA1B2C3D4E5F60718293A4B /* BackgroundRefreshManager.swift in Sources */,
 				5102D229DACDF5AEA27F609B /* DateFormatting.swift in Sources */,
 				EB8BE3728053C6A0F5BB8634 /* DayPickerView.swift in Sources */,
 				498A779D9598211FAF398773 /* OnTrackApp.swift in Sources */,
+				C7D9E1F2A3B4567890ABCDEF /* RootView.swift in Sources */,
+				E7D5F4C3B2A1908070605040 /* TrainUpdateManager.swift in Sources */,
 				9C200E4CA4858020F1EC3512 /* TrainDeparture.swift in Sources */,
+				AC1B2C3D4E5F60718293A4B5 /* TrainUpdateChecker.swift in Sources */,
 				72898E67952A5806E71F88F6 /* TrainModels.swift in Sources */,
 				C55F4CD9C196506D7A369EFF /* TrainService.swift in Sources */,
+				D8E0F1A2B3C4567890ABCDEF /* TrainTimesView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

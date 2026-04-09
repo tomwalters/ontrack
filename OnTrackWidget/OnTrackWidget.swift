@@ -5,27 +5,39 @@ import WidgetKit
 
 struct TrainEntry: TimelineEntry {
     let date: Date
-    let departure: TrainDeparture?
+    let departures: [TrainDeparture]
     let isActive: Bool
     let errorMessage: String?
+    let inactiveMessage: String?
 
     static let placeholder = TrainEntry(
         date: .now,
-        departure: TrainDeparture(
-            scheduledTime: .now,
-            expectedTime: .now,
-            status: .onTime
-        ),
+        departures: [
+            TrainDeparture(
+                scheduledTime: .now,
+                expectedTime: .now,
+                status: .onTime
+            ),
+            TrainDeparture(
+                scheduledTime: .now.addingTimeInterval(15 * 60),
+                expectedTime: .now.addingTimeInterval(18 * 60),
+                status: .delayed(minutes: 3)
+            )
+        ],
         isActive: true,
-        errorMessage: nil
+        errorMessage: nil,
+        inactiveMessage: nil
     )
 
-    static let inactive = TrainEntry(
-        date: .now,
-        departure: nil,
-        isActive: false,
-        errorMessage: nil
-    )
+    static func inactive(message: String) -> TrainEntry {
+        TrainEntry(
+            date: .now,
+            departures: [],
+            isActive: false,
+            errorMessage: nil,
+            inactiveMessage: message
+        )
+    }
 }
 
 // MARK: - Timeline Provider
@@ -48,8 +60,8 @@ struct TrainTimelineProvider: TimelineProvider {
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<TrainEntry>) -> Void) {
         fetchEntry { entry in
-            // Refresh every 15 minutes when active, every hour when inactive
-            let refreshInterval: TimeInterval = entry.isActive ? 15 * 60 : 60 * 60
+            // Refresh every 15 minutes when active, every 30 minutes when inactive
+            let refreshInterval: TimeInterval = entry.isActive ? 15 * 60 : 30 * 60
             let refreshDate = Date().addingTimeInterval(refreshInterval)
             let timeline = Timeline(entries: [entry], policy: .after(refreshDate))
             completion(timeline)
@@ -58,33 +70,49 @@ struct TrainTimelineProvider: TimelineProvider {
 
     private func fetchEntry(completion: @escaping (TrainEntry) -> Void) {
         guard let route = ConfigStore.shared.activeRoute(at: .now) else {
-            completion(.inactive)
+            completion(.inactive(message: inactiveMessage(for: .now)))
             return
         }
 
         Task {
             do {
-                let departure = try await TrainService.shared.fetchNextDeparture(
+                let departures = try await TrainService.shared.fetchDepartures(
                     from: route.originCRS,
                     to: route.destinationCRS
                 )
                 let entry = TrainEntry(
                     date: .now,
-                    departure: departure,
+                    departures: Array(departures.prefix(2)),
                     isActive: true,
-                    errorMessage: nil
+                    errorMessage: nil,
+                    inactiveMessage: nil
                 )
                 completion(entry)
             } catch {
                 let entry = TrainEntry(
                     date: .now,
-                    departure: nil,
+                    departures: [],
                     isActive: true,
-                    errorMessage: "Unable to load"
+                    errorMessage: "Unable to load",
+                    inactiveMessage: nil
                 )
                 completion(entry)
             }
         }
+    }
+
+    private func inactiveMessage(for date: Date) -> String {
+        let messages = [
+            "No trains needed. Enjoy the calm.",
+            "Commuter mode off. Stay put.",
+            "No rails required right now.",
+            "Your next train is called a couch.",
+            "Today is a stay-put day.",
+            "No rush. The platform can wait."
+        ]
+        let interval = 30.0 * 60.0
+        let index = Int(date.timeIntervalSinceReferenceDate / interval) % messages.count
+        return messages[index]
     }
 }
 
@@ -95,43 +123,59 @@ struct RectangularWidgetView: View {
 
     var body: some View {
         if !entry.isActive {
-            inactiveView
-        } else if let departure = entry.departure {
-            departureView(departure)
+            inactiveView(entry.inactiveMessage)
+        } else if !entry.departures.isEmpty {
+            departuresView(entry.departures)
         } else {
             errorView
         }
     }
 
-    private var inactiveView: some View {
+    private func inactiveView(_ message: String?) -> some View {
         HStack {
             Image(systemName: "tram.fill")
-            Text("No trains today")
+            Text(message ?? "No trains today")
                 .font(.caption)
         }
         .foregroundStyle(.secondary)
     }
 
-    private func departureView(_ departure: TrainDeparture) -> some View {
+    private func departuresView(_ departures: [TrainDeparture]) -> some View {
         HStack(spacing: 6) {
             Image(systemName: "tram.fill")
-                .font(.title3)
+                .font(.body)
 
-            VStack(alignment: .leading, spacing: 1) {
-                Text(departure.displayTime)
-                    .font(.headline)
-                    .fontWeight(.bold)
-
-                HStack(spacing: 3) {
-                    Image(systemName: departure.status.symbolName)
-                        .font(.caption2)
-                    Text(departure.status.label)
-                        .font(.caption2)
+            VStack(alignment: .leading, spacing: 2) {
+                departureRow(label: "Next", departure: departures[0])
+                if departures.count > 1 {
+                    departureRow(label: "Then", departure: departures[1])
                 }
-                .foregroundStyle(statusColor(for: departure.status))
             }
 
-            Spacer()
+            Spacer(minLength: 0)
+        }
+    }
+
+    private func departureRow(label: String, departure: TrainDeparture) -> some View {
+        HStack(spacing: 4) {
+            Text(label)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+                .allowsTightening(true)
+            Text(departure.displayTime)
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+                .allowsTightening(true)
+            Text(departure.status.shortLabel)
+                .font(.caption2)
+                .foregroundStyle(statusColor(for: departure.status))
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+                .allowsTightening(true)
         }
     }
 
@@ -161,17 +205,21 @@ struct InlineWidgetView: View {
 
     var body: some View {
         if !entry.isActive {
-            Text("No trains today")
-        } else if let departure = entry.departure {
-            switch departure.status {
-            case .onTime:
-                Text("\(Image(systemName: "tram.fill")) \(departure.displayTime) On time")
-            case .delayed(let minutes):
-                Text("\(Image(systemName: "tram.fill")) \(departure.displayTime) +\(minutes)m")
-            case .cancelled:
-                Text("\(Image(systemName: "tram.fill")) \(departure.scheduledDisplayTime) Canc.")
-            case .unknown:
-                Text("\(Image(systemName: "tram.fill")) \(departure.displayTime)")
+            Text(entry.inactiveMessage ?? "No trains today")
+        } else if let first = entry.departures.first {
+            if entry.departures.count > 1 {
+                Text("\(Image(systemName: "tram.fill")) \(first.displayTime) then \(entry.departures[1].displayTime)")
+            } else {
+                switch first.status {
+                case .onTime:
+                    Text("\(Image(systemName: "tram.fill")) \(first.displayTime) On time")
+                case .delayed(let minutes):
+                    Text("\(Image(systemName: "tram.fill")) \(first.displayTime) +\(minutes)m")
+                case .cancelled:
+                    Text("\(Image(systemName: "tram.fill")) \(first.scheduledDisplayTime) Canc.")
+                case .unknown:
+                    Text("\(Image(systemName: "tram.fill")) \(first.displayTime)")
+                }
             }
         } else {
             Text("\(Image(systemName: "exclamationmark.triangle")) Trains unavailable")
@@ -190,7 +238,7 @@ struct CircularWidgetView: View {
                     .font(.title3)
                     .foregroundStyle(.secondary)
             }
-        } else if let departure = entry.departure {
+        } else if let departure = entry.departures.first {
             ZStack {
                 AccessoryWidgetBackground()
                 VStack(spacing: 0) {
@@ -212,6 +260,133 @@ struct CircularWidgetView: View {
     }
 }
 
+struct SmallWidgetView: View {
+    let entry: TrainEntry
+
+    var body: some View {
+        if !entry.isActive {
+            inactiveView(entry.inactiveMessage)
+        } else if !entry.departures.isEmpty {
+            departuresView(entry.departures)
+        } else {
+            errorView
+        }
+    }
+
+    private func inactiveView(_ message: String?) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Image(systemName: "tram.fill")
+                .foregroundStyle(.secondary)
+            Text(message ?? "No trains today")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    private func departuresView(_ departures: [TrainDeparture]) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            departureBlock(label: "Next", departure: departures[0])
+            if departures.count > 1 {
+                departureBlock(label: "Then", departure: departures[1])
+            }
+            Spacer()
+        }
+    }
+
+    private func departureBlock(label: String, departure: TrainDeparture) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(label)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+            Text(departure.displayTime)
+                .font(.headline)
+                .fontWeight(.bold)
+            Text(departure.status.shortLabel)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    private var errorView: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Image(systemName: "exclamationmark.triangle")
+                .foregroundStyle(.secondary)
+            Text("Unable to load")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+    }
+}
+
+struct MediumWidgetView: View {
+    let entry: TrainEntry
+
+    var body: some View {
+        if !entry.isActive {
+            inactiveView(entry.inactiveMessage)
+        } else if !entry.departures.isEmpty {
+            departuresView(entry.departures)
+        } else {
+            errorView
+        }
+    }
+
+    private func inactiveView(_ message: String?) -> some View {
+        HStack {
+            Image(systemName: "tram.fill")
+                .foregroundStyle(.secondary)
+            Text(message ?? "No trains today")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            Spacer()
+        }
+    }
+
+    private func departuresView(_ departures: [TrainDeparture]) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 6) {
+                Image(systemName: "tram.fill")
+                Text("Next trains")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            HStack(spacing: 16) {
+                departureColumn(label: "Next", departure: departures[0])
+                if departures.count > 1 {
+                    departureColumn(label: "Then", departure: departures[1])
+                } else {
+                    Spacer()
+                }
+            }
+        }
+    }
+
+    private func departureColumn(label: String, departure: TrainDeparture) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(label)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+            Text(departure.displayTime)
+                .font(.title3)
+                .fontWeight(.bold)
+            Text(departure.status.shortLabel)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    private var errorView: some View {
+        HStack {
+            Image(systemName: "exclamationmark.triangle")
+            Text("Unable to load")
+                .font(.caption)
+            Spacer()
+        }
+        .foregroundStyle(.secondary)
+    }
+}
+
 // MARK: - Widget Definition
 
 struct OnTrackWidget: Widget {
@@ -229,6 +404,8 @@ struct OnTrackWidget: Widget {
         .configurationDisplayName("Next Train")
         .description("Shows your next train departure with live status.")
         .supportedFamilies([
+            .systemSmall,
+            .systemMedium,
             .accessoryRectangular,
             .accessoryInline,
             .accessoryCircular
@@ -241,16 +418,23 @@ struct WidgetContentView: View {
     let entry: TrainEntry
 
     var body: some View {
-        switch family {
-        case .accessoryRectangular:
-            RectangularWidgetView(entry: entry)
-        case .accessoryInline:
-            InlineWidgetView(entry: entry)
-        case .accessoryCircular:
-            CircularWidgetView(entry: entry)
-        default:
-            RectangularWidgetView(entry: entry)
+        Group {
+            switch family {
+            case .systemSmall:
+                SmallWidgetView(entry: entry)
+            case .systemMedium:
+                MediumWidgetView(entry: entry)
+            case .accessoryRectangular:
+                RectangularWidgetView(entry: entry)
+            case .accessoryInline:
+                InlineWidgetView(entry: entry)
+            case .accessoryCircular:
+                CircularWidgetView(entry: entry)
+            default:
+                RectangularWidgetView(entry: entry)
+            }
         }
+        .widgetURL(URL(string: "ontrack://trains")!)
     }
 }
 
@@ -262,30 +446,83 @@ struct OnTrackWidget_Previews: PreviewProvider {
         Group {
             RectangularWidgetView(entry: TrainEntry(
                 date: .now,
-                departure: TrainDeparture(
-                    scheduledTime: .now.addingTimeInterval(20 * 60),
-                    expectedTime: .now.addingTimeInterval(23 * 60),
-                    status: .delayed(minutes: 3)
-                ),
+                departures: [
+                    TrainDeparture(
+                        scheduledTime: .now.addingTimeInterval(20 * 60),
+                        expectedTime: .now.addingTimeInterval(23 * 60),
+                        status: .delayed(minutes: 3)
+                    ),
+                    TrainDeparture(
+                        scheduledTime: .now.addingTimeInterval(35 * 60),
+                        expectedTime: .now.addingTimeInterval(35 * 60),
+                        status: .onTime
+                    )
+                ],
                 isActive: true,
-                errorMessage: nil
+                errorMessage: nil,
+                inactiveMessage: nil
             ))
             .previewContext(WidgetPreviewContext(family: .accessoryRectangular))
             .previewDisplayName("Rectangular - Delayed")
 
-            RectangularWidgetView(entry: .inactive)
+            RectangularWidgetView(entry: .inactive(message: "No trains needed. Enjoy the calm."))
                 .previewContext(WidgetPreviewContext(family: .accessoryRectangular))
                 .previewDisplayName("Rectangular - Inactive")
 
+            SmallWidgetView(entry: TrainEntry(
+                date: .now,
+                departures: [
+                    TrainDeparture(
+                        scheduledTime: .now.addingTimeInterval(12 * 60),
+                        expectedTime: .now.addingTimeInterval(12 * 60),
+                        status: .onTime
+                    ),
+                    TrainDeparture(
+                        scheduledTime: .now.addingTimeInterval(26 * 60),
+                        expectedTime: .now.addingTimeInterval(28 * 60),
+                        status: .delayed(minutes: 2)
+                    )
+                ],
+                isActive: true,
+                errorMessage: nil,
+                inactiveMessage: nil
+            ))
+            .previewContext(WidgetPreviewContext(family: .systemSmall))
+            .previewDisplayName("Small - Next Two")
+
+            MediumWidgetView(entry: TrainEntry(
+                date: .now,
+                departures: [
+                    TrainDeparture(
+                        scheduledTime: .now.addingTimeInterval(8 * 60),
+                        expectedTime: .now.addingTimeInterval(10 * 60),
+                        status: .delayed(minutes: 2)
+                    ),
+                    TrainDeparture(
+                        scheduledTime: .now.addingTimeInterval(22 * 60),
+                        expectedTime: .now.addingTimeInterval(22 * 60),
+                        status: .onTime
+                    )
+                ],
+                isActive: true,
+                errorMessage: nil,
+                inactiveMessage: nil
+            ))
+            .previewContext(WidgetPreviewContext(family: .systemMedium))
+            .previewDisplayName("Medium - Next Two")
+
             CircularWidgetView(entry: TrainEntry(
                 date: .now,
-                departure: TrainDeparture(
-                    scheduledTime: .now.addingTimeInterval(20 * 60),
-                    expectedTime: .now.addingTimeInterval(20 * 60),
-                    status: .onTime
-                ),
+                departures: [
+                    TrainDeparture(
+                        scheduledTime: .now.addingTimeInterval(20 * 60),
+                        expectedTime: .now.addingTimeInterval(20 * 60),
+                        status: .onTime
+                    )
+                ],
                 isActive: true,
-                errorMessage: nil
+                errorMessage: nil,
+                inactiveMessage: nil
             ))
             .previewContext(WidgetPreviewContext(family: .accessoryCircular))
             .previewDisplayName("Circular - On Time")
