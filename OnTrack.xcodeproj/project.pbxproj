@@ -11,6 +11,7 @@
 		21DB7478054978AA916A28F1 /* OnTrackWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7456A9A37CA2A5C4EE39EF43 /* OnTrackWidget.swift */; };
 		267D5DCAD8538A41F8FBCDBC /* TrainDeparture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC7375D102EDC2418163719 /* TrainDeparture.swift */; };
 		486F233E2F87C62A007F4F7B /* FetchedTrainInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486F233D2F87C62A007F4F7B /* FetchedTrainInfo.swift */; };
+		486F23412F87C948007F4F7B /* FetchedTrainInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486F233D2F87C62A007F4F7B /* FetchedTrainInfo.swift */; };
 		498A779D9598211FAF398773 /* OnTrackApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D41B9B42135C291A8F7323 /* OnTrackApp.swift */; };
 		5102D229DACDF5AEA27F609B /* DateFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52ECC0A7AC9E3D5D46C82CBA /* DateFormatting.swift */; };
 		61CDB2384E5037738F7CD0C5 /* TrainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A72B1619DB7AF461095A59 /* TrainService.swift */; };
@@ -211,7 +212,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 2640;
 			};
 			buildConfigurationList = E43FAA3262C256C7355C8285 /* Build configuration list for PBXProject "OnTrack" */;
 			developmentRegion = en;
@@ -256,6 +257,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				486F23412F87C948007F4F7B /* FetchedTrainInfo.swift in Sources */,
 				15BBFAF1BAF6260304C1C1A2 /* CommuteConfig.swift in Sources */,
 				DDE6B550CFE5D4C427002EB1 /* ConfigStore.swift in Sources */,
 				DA2489F3D4C0610553BAB829 /* DateFormatting.swift in Sources */,
@@ -313,8 +315,10 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 6M3JKK8KFK;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -328,6 +332,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.9;
@@ -370,8 +375,10 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 6M3JKK8KFK;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -392,6 +399,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.9;
@@ -405,7 +413,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = OnTrack/OnTrack.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 6M3JKK8KFK;
 				INFOPLIST_FILE = OnTrack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -423,7 +430,6 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = OnTrackWidget/OnTrackWidgetExtension.entitlements;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = 6M3JKK8KFK;
 				INFOPLIST_FILE = OnTrackWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -442,7 +448,6 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = OnTrackWidget/OnTrackWidgetExtension.entitlements;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = 6M3JKK8KFK;
 				INFOPLIST_FILE = OnTrackWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -461,7 +466,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = OnTrack/OnTrack.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 6M3JKK8KFK;
 				INFOPLIST_FILE = OnTrack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

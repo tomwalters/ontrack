@@ -38,6 +38,11 @@ struct JourneyRequest: Codable {
 struct StationRequest: Codable {
     let crsCode: String
     let isGroup: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case crsCode = "crs"
+        case isGroup = "group"
+    }
 }
 
 struct OutwardTime: Codable {
@@ -54,6 +59,11 @@ struct FareRequestDetails: Codable {
 struct Passengers: Codable {
     let adults: Int
     let children: Int
+
+    enum CodingKeys: String, CodingKey {
+        case adults = "adult"
+        case children = "child"
+    }
 }
 
 // MARK: - Response Models

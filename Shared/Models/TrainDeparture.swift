@@ -1,6 +1,6 @@
 import Foundation
 
-struct TrainDeparture {
+struct TrainDeparture: Codable, Equatable {
     let scheduledTime: Date
     let expectedTime: Date
     let status: TrainStatus
@@ -14,7 +14,7 @@ struct TrainDeparture {
     }
 }
 
-enum TrainStatus: Equatable {
+enum TrainStatus: Codable, Equatable {
     case onTime
     case delayed(minutes: Int)
     case cancelled
