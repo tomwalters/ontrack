@@ -79,9 +79,31 @@ actor TrainService {
         let departures = try await fetchDepartures(from: originCRS, to: destinationCRS)
         // Skip cancelled trains and find the next actual departure
         if let next = departures.first(where: { $0.status != .cancelled }) {
+            let defaults = UserDefaults(suiteName: "group.com.ontrack.shared") ?? .standard
+            defaults.set(Date().timeIntervalSince1970, forKey: "lastFetchDate")
+
+            let routeKey = "\(originCRS.uppercased())-\(destinationCRS.uppercased())"
+            let record = FetchedTrainInfo(route: routeKey, timestamp: Date(), departure: next)
+            let historyDefaults = UserDefaults(suiteName: "group.com.ontrack.shared") ?? .standard
+            var history = historyDefaults.fetchHistory(forRoute: routeKey)
+            history.insert(record, at: 0)
+            if history.count > 10 { history = Array(history.prefix(10)) }
+            historyDefaults.saveHistory(history, forRoute: routeKey)
+
             return next
         }
         if let first = departures.first {
+            let defaults = UserDefaults(suiteName: "group.com.ontrack.shared") ?? .standard
+            defaults.set(Date().timeIntervalSince1970, forKey: "lastFetchDate")
+
+            let routeKey = "\(originCRS.uppercased())-\(destinationCRS.uppercased())"
+            let record = FetchedTrainInfo(route: routeKey, timestamp: Date(), departure: first)
+            let historyDefaults = UserDefaults(suiteName: "group.com.ontrack.shared") ?? .standard
+            var history = historyDefaults.fetchHistory(forRoute: routeKey)
+            history.insert(record, at: 0)
+            if history.count > 10 { history = Array(history.prefix(10)) }
+            historyDefaults.saveHistory(history, forRoute: routeKey)
+
             return first
         }
         throw TrainServiceError.noDepartures

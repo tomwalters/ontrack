@@ -10,6 +10,7 @@
 		15BBFAF1BAF6260304C1C1A2 /* CommuteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096DC597CB60F5336FC91466 /* CommuteConfig.swift */; };
 		21DB7478054978AA916A28F1 /* OnTrackWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7456A9A37CA2A5C4EE39EF43 /* OnTrackWidget.swift */; };
 		267D5DCAD8538A41F8FBCDBC /* TrainDeparture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC7375D102EDC2418163719 /* TrainDeparture.swift */; };
+		486F233E2F87C62A007F4F7B /* FetchedTrainInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486F233D2F87C62A007F4F7B /* FetchedTrainInfo.swift */; };
 		498A779D9598211FAF398773 /* OnTrackApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D41B9B42135C291A8F7323 /* OnTrackApp.swift */; };
 		5102D229DACDF5AEA27F609B /* DateFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52ECC0A7AC9E3D5D46C82CBA /* DateFormatting.swift */; };
 		61CDB2384E5037738F7CD0C5 /* TrainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A72B1619DB7AF461095A59 /* TrainService.swift */; };
@@ -53,13 +54,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		056912A677A6BDB1891BE621 /* OnTrack.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = OnTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		056912A677A6BDB1891BE621 /* OnTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		096DC597CB60F5336FC91466 /* CommuteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommuteConfig.swift; sourceTree = "<group>"; };
 		126C7E4153374AB0E1BF18E5 /* OnTrackWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnTrackWidgetBundle.swift; sourceTree = "<group>"; };
 		1CC7375D102EDC2418163719 /* TrainDeparture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainDeparture.swift; sourceTree = "<group>"; };
 		27A72B1619DB7AF461095A59 /* TrainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainService.swift; sourceTree = "<group>"; };
 		435E1EFA7A800F8BCEE995CD /* ConfigStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigStore.swift; sourceTree = "<group>"; };
 		45D41B9B42135C291A8F7323 /* OnTrackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnTrackApp.swift; sourceTree = "<group>"; };
+		486F233D2F87C62A007F4F7B /* FetchedTrainInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedTrainInfo.swift; sourceTree = "<group>"; };
 		52ECC0A7AC9E3D5D46C82CBA /* DateFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatting.swift; sourceTree = "<group>"; };
 		7456A9A37CA2A5C4EE39EF43 /* OnTrackWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnTrackWidget.swift; sourceTree = "<group>"; };
 		7B1F341190FDE6612F80F2F9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -70,7 +72,7 @@
 		A6EF3BD2BD53B86A3DF28F6C /* OnTrackWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OnTrackWidgetExtension.entitlements; sourceTree = "<group>"; };
 		CE3235A16104D1E3F0ABC702 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		F087EE5CC9EEE6CD6CEFA285 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		F11153E76A204FC345D13987 /* OnTrackWidgetExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = OnTrackWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		F11153E76A204FC345D13987 /* OnTrackWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OnTrackWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -132,6 +134,7 @@
 				8E83AA58B2722D1F4839D255 /* OnTrack.entitlements */,
 				45D41B9B42135C291A8F7323 /* OnTrackApp.swift */,
 				FDA0A7CB4DBB010A00380D16 /* Views */,
+				486F233D2F87C62A007F4F7B /* FetchedTrainInfo.swift */,
 			);
 			path = OnTrack;
 			sourceTree = "<group>";
@@ -209,8 +212,6 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1500;
-				TargetAttributes = {
-				};
 			};
 			buildConfigurationList = E43FAA3262C256C7355C8285 /* Build configuration list for PBXProject "OnTrack" */;
 			developmentRegion = en;
@@ -240,6 +241,7 @@
 				7D5AE94C2D7D492258AA89B7 /* CommuteConfig.swift in Sources */,
 				62CE2424FD70D597F2116D9C /* CommuteConfigView.swift in Sources */,
 				9D2D6EA997DCB40B5DA258D3 /* ConfigStore.swift in Sources */,
+				486F233E2F87C62A007F4F7B /* FetchedTrainInfo.swift in Sources */,
 				6844D384743E931E68ECD46F /* ContentView.swift in Sources */,
 				5102D229DACDF5AEA27F609B /* DateFormatting.swift in Sources */,
 				EB8BE3728053C6A0F5BB8634 /* DayPickerView.swift in Sources */,
@@ -403,12 +405,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = OnTrack/OnTrack.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 6M3JKK8KFK;
 				INFOPLIST_FILE = OnTrack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ontrack.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tomwalters.ontrack;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -419,13 +422,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = OnTrackWidget/OnTrackWidgetExtension.entitlements;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = 6M3JKK8KFK;
 				INFOPLIST_FILE = OnTrackWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ontrack.app.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tomwalters.ontrack.widget;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -436,13 +441,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = OnTrackWidget/OnTrackWidgetExtension.entitlements;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = 6M3JKK8KFK;
 				INFOPLIST_FILE = OnTrackWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ontrack.app.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tomwalters.ontrack.widget;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -454,12 +461,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = OnTrack/OnTrack.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 6M3JKK8KFK;
 				INFOPLIST_FILE = OnTrack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ontrack.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tomwalters.ontrack;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
